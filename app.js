@@ -2,8 +2,9 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
-// const expressValidator = require('express-validator');
+// const bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+const expressValidator = require('express-validator');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -18,20 +19,23 @@ mongoose.connection.on('error', err => {
   console.log(`DB connection error: ${err.message}`);
 });
 
-// Gets Routes
+// Routes
 const postRoutes = require('./routes/post');
+const authRoutes = require('./routes/auth');
 
 // Middleware
 app.use(morgan('dev'));
 
 // Body parser
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(cookieParser());
 
 // Validation
-// app.use(expressValidator());
+app.use(expressValidator());
 
 // App routes
 app.use('/', postRoutes);
+app.use('/', authRoutes);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
