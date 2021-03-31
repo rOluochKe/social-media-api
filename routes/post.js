@@ -8,7 +8,9 @@ const {
   updatePost,
   deletePost,
   photo,
-  singlePost } = require('../controllers/post');
+  singlePost,
+  like,
+  unlike } = require('../controllers/post');
 const { requireSignin } = require('../controllers/auth');
 const { userById } = require('../controllers/user');
 const { createPostValidator } = require('../validator');
@@ -17,6 +19,11 @@ const router = express.Router();
 
 // Posts Routes
 router.get('/posts', getPosts);
+
+// like unlike
+router.put('/post/like', requireSignin, like);
+router.put('/post/unlike', requireSignin, unlike);
+
 router.post('/post/new/:userId', requireSignin, createPost, createPostValidator);
 router.get('/posts/by/:userId', requireSignin, postsByUser);
 router.get('/post/:postId', singlePost);
