@@ -26,45 +26,49 @@ const userSchema = new mongoose.Schema({
   updated: Date,
   photo: {
     data: Buffer,
-    contentType: String
+    contentType: String,
   },
   about: {
     type: String,
-    trim: true
+    trim: true,
   },
   following: [{ type: ObjectId, ref: "User" }],
   followers: [{ type: ObjectId, ref: "User" }],
+  resetPasswordLink: {
+    data: String,
+    default: "",
+  },
 });
 
 // Virtual field
 userSchema
-    .virtual("password")
-    .set(function (password) {
-      // Create temporary variable called _password
-      this._password = password;
-      // Generate a timestamp
-      this.salt = uuidv1();
-      // encryptPassword
-      this.hashed_password = this.encryptPassword(password);
-    })
-    .get(function () {
-      return this._password;
-    });
+  .virtual("password")
+  .set(function (password) {
+    // Create temporary variable called _password
+    this._password = password;
+    // Generate a timestamp
+    this.salt = uuidv1();
+    // encryptPassword
+    this.hashed_password = this.encryptPassword(password);
+  })
+  .get(function () {
+    return this._password;
+  });
 
 // Methods
 userSchema.methods = {
-  authenticate: function(plainText) {
+  authenticate: function (plainText) {
     return this.encryptPassword(plainText) === this.hashed_password;
   },
-  
+
   encryptPassword: function (password) {
     if (!password) return "";
 
     try {
       return crypto
-          .createHmac("sha1", this.salt)
-          .update(password)
-          .digest("hex");
+        .createHmac("sha1", this.salt)
+        .update(password)
+        .digest("hex");
     } catch (err) {
       return "";
     }
