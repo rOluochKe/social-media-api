@@ -1,6 +1,6 @@
 const nodeMailer = require("nodemailer");
 
-const defaultEmailData = { from: "noreply@node-react.com" };
+const defaultEmailData = { from: "noreply@social-media-app.com" };
 
 exports.sendEmail = (emailData) => {
   const transporter = nodeMailer.createTransport({
@@ -9,7 +9,7 @@ exports.sendEmail = (emailData) => {
     secure: false,
     requireTLS: true,
     auth: {
-      user: "masterjupiter2015@gmail.com",
+      user: "demo.oluoch@gmail.com",
       pass: "kshzlmomlthllktq",
     },
   });
