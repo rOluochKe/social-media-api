@@ -9,7 +9,7 @@
 - Authorization
 
 ## Front End: React JS
-> View in this [REPO](https://github.com/rOluochKe/pandabize-ui)
+> View in this [REPO](https://github.com/rOluochKe/social-media-ui)
 
 ## Usage
 
