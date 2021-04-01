@@ -20,8 +20,13 @@ exports.userById = (req, res, next, id) => {
 };
 
 exports.hasAuthorization = (req, res, next) => {
-  const authorized =
-    req.profile && req.auth && req.profile._id === req.auth._id;
+  let sameUser = req.profile && req.auth && req.profile._id == req.auth._id;
+  let adminUser = req.profile && req.auth && req.auth.role === "admin";
+
+  const authorized = sameUser || adminUser;
+
+  // console.log("req.profile ", req.profile, " req.auth ", req.auth);
+  // console.log("SAMEUSER", sameUser, "ADMINUSER", adminUser);
 
   if (!authorized) {
     return res.status(403).json({
@@ -39,7 +44,7 @@ exports.allUsers = (req, res) => {
       });
     }
     res.json(users);
-  }).select("name email updated created");
+  }).select("name email updated created role");
 };
 
 exports.getUser = (req, res) => {
@@ -49,21 +54,19 @@ exports.getUser = (req, res) => {
 };
 
 // exports.updateUser = (req, res, next) => {
-//   let user = req.profile;
-//   user = _.extend(user, req.body); // extend - mutate the source object
-
-//   user.updated = Date.now();
-
-//   user.save((err) => {
-//     if (err) {
-//       return res.status(400).json({
-//         error: "You are not authorized to perform this action",
-//       });
-//     }
-//     user.hashed_password = undefined;
-//     user.salt = undefined;
-//     res.json({ user });
-//   });
+//     let user = req.profile;
+//     user = _.extend(user, req.body); // extend - mutate the source object
+//     user.updated = Date.now();
+//     user.save(err => {
+//         if (err) {
+//             return res.status(400).json({
+//                 error: "You are not authorized to perform this action"
+//             });
+//         }
+//         user.hashed_password = undefined;
+//         user.salt = undefined;
+//         res.json({ user });
+//     });
 // };
 
 exports.updateUser = (req, res, next) => {
@@ -113,7 +116,6 @@ exports.userPhoto = (req, res, next) => {
 
 exports.deleteUser = (req, res, next) => {
   let user = req.profile;
-
   user.remove((err, user) => {
     if (err) {
       return res.status(400).json({

@@ -12,7 +12,7 @@ const postSchema = new mongoose.Schema({
   },
   photo: {
     data: Buffer,
-    contentType: String,
+    contenType: String,
   },
   postedBy: {
     type: ObjectId,
@@ -30,7 +30,7 @@ const postSchema = new mongoose.Schema({
       created: { type: Date, default: Date.now },
       postedBy: { type: ObjectId, ref: "User" },
     },
-  ]
+  ],
 });
 
 module.exports = mongoose.model("Post", postSchema);
