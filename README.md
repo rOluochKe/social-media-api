@@ -7,6 +7,9 @@
 - Pagination
 - Authentication
 - Authorization
+- Emails
+- Social Media Login
+- Recapture
 
 ## Front End: React JS
 > View in this [REPO](https://github.com/rOluochKe/social-media-ui)
